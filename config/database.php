@@ -1,5 +1,5 @@
 <?php
-  require_once(__DIR__.'/partial/header.php');
+require_once(__DIR__.'/../partial/header.php');
 
   try{
 $db = new PDO ('mysql:host=localhost;dbname=webfix', 'root', '');
