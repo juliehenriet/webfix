@@ -3,17 +3,13 @@
 
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
-$query = $db->query('SELECT * FROM movie WHERE id = '.$id);
-$movie = $query->fetchALL();
-
  ?>
 
 <div class="container">
 <form action="movie_add.php" method="post" enctype="multipart/form-data">
 
-<?php foreach ($movie as $film) {
-  // code...
-?>
+
+
 <input class="form-control form-control-lg" type="text" name="name"></input>
 
 <div class="form-group">
@@ -33,7 +29,7 @@ $movie = $query->fetchALL();
 </select></br>
   <button type="submit" class="btn btn-danger">Submit</button>
 </div>
-<?php }  ?>
+
  </form>
 
  <?php
@@ -75,16 +71,15 @@ if (!empty($_POST)){
 
 
 
-  if (empty($errors)) {
-  $query = $db->prepare('UPDATE movie SET title=:title, id=:id, description=:description, video_link=:video_link WHERE id=:id');
+
+$query = $db->prepare('UPDATE movie SET `title`, `id`, `description`, `video_link` = :title, :id, :description, :video_link');
 
     $query->bindValue(':title', $name, PDO::PARAM_STR);
       $query->bindValue(':id', $category, PDO::PARAM_STR);
     $query->bindValue(':description', $description, PDO::PARAM_STR);
     $query->bindValue(':video_link',$video_link, PDO::PARAM_STR);
 
-if ($query->execute()){
+$query->execute();
   echo 'succes';
-}
-  }
+
 }

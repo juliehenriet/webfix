@@ -71,7 +71,7 @@ if (!empty($_POST)){
 
   if (empty($errors)) {
     $query = $db->prepare('
-        INSERT INTO movie (`title`, id, `description`, `video_link`) VALUES (:title, :id, :description, :video_link)
+        INSERT INTO movie (`title`, `id`, `description`, `video_link`) VALUES (:title, :id, :description, :video_link)
     ');
     $query->bindValue(':title', $name, PDO::PARAM_STR);
       $query->bindValue(':id', $category, PDO::PARAM_STR);
