@@ -3,6 +3,7 @@
   require_once(__DIR__.'/../webflix/partial/header.php');
   $query = $db->query('SELECT * FROM category');
   $categorys = $query->fetchAll();
+
  ?>
 
 <div class="container">
@@ -17,10 +18,13 @@
 
 <input class="form-control form-control-lg" type="text" name ="video_link"/></br>
 
-<select class="form-control form-control-lg" name="category">
-    <?php foreach ($categorys as $category) {?>
-  <option><?php echo $category['name']; ?></option>
-    <?php  }  ?>
+<select class="form-control form-control-lg" name="category" <?php echo isset($errors['category']) ? 'is-invalid' : null; ?>>
+
+      <option>selectionnez la catégorie</option>
+        <?php foreach ($categorys as $category) {?>
+      <option  value="action" <?php echo ($category === $category['name']) ? 'selected' : ''; ?>><?php echo $category['name']; ?></option>
+  <?php  }  ?>
+
 </select></br>
   <button type="submit" class="btn btn-danger">Submit</button>
 </div>
@@ -34,6 +38,7 @@ $video_link = null;
 $category = null;
 
 if (!empty($_POST)){
+
     $name = $_POST['name'];
     $description = $_POST['description'];
     $video_link =  $_POST['video_link'];
@@ -66,18 +71,17 @@ if (!empty($_POST)){
 
   if (empty($errors)) {
     $query = $db->prepare('
-        INSERT INTO movie (`name`, `category`, `description`, `video_link`) VALUES (:name, :category, :description, :video_link)
+        INSERT INTO movie (`title`, id, `description`, `video_link`) VALUES (:title, :id, :description, :video_link)
     ');
-    $query->bindValue(':name', $name, PDO::PARAM_STR);
-    $query->bindValue(':category', $category, PDO::PARAM_STR);
+    $query->bindValue(':title', $name, PDO::PARAM_STR);
+      $query->bindValue(':id', $category, PDO::PARAM_STR);
     $query->bindValue(':description', $description, PDO::PARAM_STR);
-    $query->bindValue(':video_link ',$video_link, PDO::PARAM_STR);
+    $query->bindValue(':video_link',$video_link, PDO::PARAM_STR);
 
-    if ($query->execute()) {
-        $success = true;
-
-    }
+if ($query->execute()){
+  echo 'succes';
 }
+  }
 }
 
 
