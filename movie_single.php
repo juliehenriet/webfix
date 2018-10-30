@@ -3,8 +3,8 @@ require_once(__DIR__.'/../webflix/partial/header.php');
 
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
-$query = $db->query('SELECT * FROM movie');
-$movie = $query->fetchAll();
+$query = $db->query('SELECT * FROM movie WHERE id = '.$id);
+$movie = $query->fetchALL();
 
  ?>
 
@@ -13,11 +13,13 @@ $movie = $query->fetchAll();
    <div class="row align-items-start">
  <?php  foreach ($movie as $film) { ?>
 
-     <div class="col" ><iframe width="1050" height="720" "<?php echo $film['video_link'] ?>" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+     <div class="col" >
 
+          <div class= "embed-responsive embed-responsive-16by9" > <iframe class= "embed-responsive-item" <?php echo $film['video_link'];  ?> allowfullscreen ></iframe> </div>
+       <div class ="titre"><h1><?php echo $film['title'];  ?></h1>
       </br>
          <?php echo $film['description']; ?></br>
-
+</div>
      </div>
    </div>
     <?php   }?>

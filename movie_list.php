@@ -13,46 +13,13 @@ $movies = $query->fetchAll();
 <?php  foreach ($movies as $movie) { ?>
 
     <div class="col" >
-      <?php echo $movie['video_link'];  ?></br>
+       <div class= "embed-responsive embed-responsive-16by9" > <iframe class= "embed-responsive-item" <?php echo $movie['video_link'];  ?> allowfullscreen ></iframe> </div>
+     <div class ="titre"><h1><?php echo $movie['title'];  ?></h1>
         <?php echo $movie['description']; ?></br>
 
-<button type="button" class="btn btn-danger"><a href ="movie_single.php ">voir le film</a></button>
+<a  class="btn btn-danger" href ="movie_single.php ?id=<?php echo $movie['id'];?>">voir le film</a>
     </div>
-    <div class="col" >
-      <?php echo $movie['video_link'];  ?></br>
-        <?php echo $movie['description']; ?></br>
-
-<button type="button" class="btn btn-danger"><a href ="movie_single.php ">voir le film</a></button>
-    </div>
-    <div class="col" >
-      <?php echo $movie['video_link'];  ?></br>
-        <?php echo $movie['description']; ?></br>
-
-<button type="button" class="btn btn-danger"><a href ="movie_single.php ">voir le film</a></button>
-    </div>
-
-  </main>
-    <main class ="container">
-
-      <div class="row align-items-start">
-    <div class="col" >
-      <?php echo $movie['video_link'];  ?></br>
-        <?php echo $movie['description']; ?></br>
-
-<button type="button" class="btn btn-danger"><a href ="movie_single.php ">voir le film</a></button>
-    </div>
-    <div class="col" >
-      <?php echo $movie['video_link'];  ?></br>
-        <?php echo $movie['description']; ?></br>
-
-<button type="button" class="btn btn-danger"><a href ="movie_single.php ">voir le film</a></button>
-    </div>
-    <div class="col" >
-      <?php echo $movie['video_link'];  ?></br>
-        <?php echo $movie['description']; ?></br>
-
-<button type="button" class="btn btn-danger"><a href ="movie_single.php ">voir le film</a></button>
-    </div>
+</div>
 
  <?php   }?>
 </main>
