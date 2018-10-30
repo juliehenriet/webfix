@@ -2,6 +2,10 @@
 require_once(__DIR__.'/../config/database.php');
  ?>
 
+ <?php
+ $query = $db->query('SELECT * FROM category');
+ $categorys = $query->fetchAll();
+  ?>
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -32,16 +36,17 @@ require_once(__DIR__.'/../config/database.php');
         <a class="nav-link" href="#">Inscription</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Ajouter un film</a>
+        <a class="nav-link" href="movie_add.php">Ajouter un film</a>
       </li>
+
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Catégories
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+      <select class="" name="">
+        <?php foreach ($categorys as $category) {?>
+      
+      <option value="">  <a class="dropdown-item" href=" #"><?php echo $category['name']; ?></a></option>
+      <?php  }  ?>
+    </select>
+
         </div>
       </li>
     </ul>
