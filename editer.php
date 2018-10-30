@@ -74,12 +74,11 @@ if (!empty($_POST)){
 
 if (empty($errors)) {
 
-  $query = $db->prepare('UPDATE movie SET  title= :title, description= :description, category= :category, video_link= :video_link, WHERE id = :id');
+  $query = $db->prepare('UPDATE movie SET  title=:title, description=:description, id=:id, video_link=:video_link, WHERE id = :id');
   $query->bindValue(':title',  $name, PDO::PARAM_STR);
     $query->bindValue(':description',  $description, PDO::PARAM_STR);
-      $query->bindValue(':category',  $category, PDO::PARAM_STR);
+      $query->bindValue(':id',  $category, PDO::PARAM_STR);
           $query->bindValue(':video_link',  $video_link, PDO::PARAM_STR);
-  $query->bindValue(':id', $id, PDO::PARAM_INT);
 
 if ($query->execute()){
 echo 'succes';
