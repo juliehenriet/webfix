@@ -6,7 +6,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
  ?>
 
 <div class="container">
-<form action="movie_add.php" method="post" enctype="multipart/form-data">
+<form action="editer.php" method="post" enctype="multipart/form-data">
 
 
 
@@ -72,14 +72,17 @@ if (!empty($_POST)){
 
 
 
-$query = $db->prepare('UPDATE movie SET `title`, `id`, `description`, `video_link` = :title, :id, :description, :video_link');
+if (empty($errors)) {
 
-    $query->bindValue(':title', $name, PDO::PARAM_STR);
-      $query->bindValue(':id', $category, PDO::PARAM_STR);
-    $query->bindValue(':description', $description, PDO::PARAM_STR);
-    $query->bindValue(':video_link',$video_link, PDO::PARAM_STR);
+  $query = $db->prepare('UPDATE movie SET  title= :title, description= :description, category= :category, video_link= :video_link, WHERE id = :id');
+  $query->bindValue(':title',  $name, PDO::PARAM_STR);
+    $query->bindValue(':description',  $description, PDO::PARAM_STR);
+      $query->bindValue(':category',  $category, PDO::PARAM_STR);
+          $query->bindValue(':video_link',  $video_link, PDO::PARAM_STR);
+  $query->bindValue(':id', $id, PDO::PARAM_INT);
 
-$query->execute();
-  echo 'succes';
-
+if ($query->execute()){
+echo 'succes';
+}
+}
 }
