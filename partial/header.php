@@ -6,9 +6,6 @@ require_once(__DIR__.'/../config/database.php');
  $query = $db->query('SELECT * FROM category');
  $categorys = $query->fetchAll();
 
- $query = $db->query('SELECT * FROM movie');
- $movie = $query->fetch();
-
   ?>
 
 <!DOCTYPE html>
@@ -46,13 +43,12 @@ require_once(__DIR__.'/../config/database.php');
       <li class="nav-item dropdown">
       <select class="" name="">
         <?php foreach ($categorys as $category) {?>
+    <option  value="<?php echo $category['id']; ?>"<?php echo ($categorys === $category) ? 'selected' : ''; ?>> <?php echo $category['name'];?> </option>
+<?php  }  ?>
 
-      <option value="<?php echo $category['id'] ;?>"><a class="dropdown-item" href=" "><?php echo $category['name']; ?>
-    <?php foreach ($movie as $movieCa) {?>
-      <?php echo $movieCa['category_id'] ?>
-      <?php  }  ?>
-      </a></option>
-      <?php  }  ?>
+  
+
+
     </select>
 
         </div>
