@@ -3,14 +3,72 @@
 
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
+$query = $db->query('SELECT * FROM movie WHERE id = '.$id);
+$movie = $query->fetch();
+
+$query->bindValue(':id',  $id, PDO::PARAM_INT);
+$query->execute();
+$query = $db->query('SELECT * FROM category');
+$categorys = $query->fetchAll();
+
+$title = $movie['title'];
+$description = $movie['description'];
+$video_link = $movie['video_link'];
+$category = $movie['category_id'];
+
+
+
+if (!empty($_POST)){
+
+   $title = $_POST['title'];
+   $description = $_POST['description'];
+   $video_link =  $_POST['video_link'];
+   $category = $_POST['category'];
+
+   $errors = [];
+
+   if (empty($title)) {
+     $errors['title'] = 'Le nom n\'est pas valide';
+       echo 'le nom n est pas valide';
+ }
+
+
+ // Vérifier la description
+ if (strlen($description) < 10) {
+     $errors['description'] = 'La description n\'est pas valide';
+     echo 'La description n\'est pas valide';
+ }
+
+ if (empty($video_link)) {
+   $errors['video_link'] = 'Le nom n\'est pas valide';
+   echo 'Le lien n\'est pas valide';
+}
+
+
+
+
+if (empty($errors)) {
+
+ $query = $db->prepare("UPDATE movie SET  title = :title, description = :description, category_id = :category_id, video_link = :video_link WHERE id = $id
+ ");
+ $query->bindValue(':title',  $title, PDO::PARAM_STR);
+   $query->bindValue(':description',  $description, PDO::PARAM_STR);
+     $query->bindValue(':category_id',  $category, PDO::PARAM_STR);
+         $query->bindValue(':video_link',  $video_link, PDO::PARAM_STR);
+
+
+if ($query->execute()){
+echo 'succes';
+}
+}
+}
+
  ?>
 
 <div class="container">
-<form action="editer.php" method="post" enctype="multipart/form-data">
+<form action="#" method="post" enctype="multipart/form-data">
 
-
-
-<input class="form-control form-control-lg" type="text" name="name"></input>
+<input class="form-control form-control-lg" type="text" name="title"></input>
 
 <div class="form-group">
     <label for="exampleFormControlTextarea1">Description</label>
@@ -23,7 +81,9 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
 
       <option>selectionnez la catégorie</option>
         <?php foreach ($categorys as $category) {?>
-      <option  value="action" <?php echo ($category === $category['name']) ? 'selected' : ''; ?>><?php echo $category['name']; ?></option>
+    
+
+          <option  value="<?php echo $category['id'] ;?>"<?php echo ($categorys === $category) ? 'selected' : ''; ?>;> <?php echo $category['name'];?> </option>
   <?php  }  ?>
 
 </select></br>
@@ -31,57 +91,3 @@ $id = isset($_GET['id']) ? $_GET['id'] : 0;
 </div>
 
  </form>
-
- <?php
-
-$name = null;
-$description = null;
-$video_link = null;
-$category = null;
-
-if (!empty($_POST)){
-
-    $name = $_POST['name'];
-    $description = $_POST['description'];
-    $video_link =  $_POST['video_link'];
-    $category = $_POST['category'];
-
-    $errors = [];
-
-    if (empty($name)) {
-      $errors['name'] = 'Le nom n\'est pas valide';
-        echo 'le nom n est pas valide';
-  }
-
-
-  if (empty($category) || !in_array($category, ['action', 'fantastique', 'comédie',])) {
-      $errors['category'] = 'La catégorie n\'est pas valide';
-      echo 'la categorie n est pas valide';
-  }
-  // Vérifier la description
-  if (strlen($description) < 10) {
-      $errors['description'] = 'La description n\'est pas valide';
-      echo 'La description n\'est pas valide';
-  }
-
-  if (empty($video_link)) {
-    $errors['video_link'] = 'Le nom n\'est pas valide';
-    echo 'Le lien n\'est pas valide';
-}
-
-
-
-
-if (empty($errors)) {
-
-  $query = $db->prepare('UPDATE movie SET  title=:title, description=:description, id=:id, video_link=:video_link, WHERE id = :id');
-  $query->bindValue(':title',  $name, PDO::PARAM_STR);
-    $query->bindValue(':description',  $description, PDO::PARAM_STR);
-      $query->bindValue(':id',  $category, PDO::PARAM_STR);
-          $query->bindValue(':video_link',  $video_link, PDO::PARAM_STR);
-
-if ($query->execute()){
-echo 'succes';
-}
-}
-}

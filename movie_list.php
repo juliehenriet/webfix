@@ -18,7 +18,7 @@ $movies = $query->fetchAll();
 
 <a  class="btn btn-danger" href ="movie_single.php ?id=<?php echo $movie['id'];?>">voir le film</a>
 <a  class="btn btn-danger" href ="editer.php ?id=<?php echo $movie['id'];?>">Editer</a>
-<a  class="btn btn-danger" href ="delete.php?id= <?php echo $movie['id'] ?> ">Supprimer</a>
+<a  class="btn btn-danger" href ="delete.php <?php echo $movie['id'] ?>">Supprimer</a>
     </div>
 </div>
 

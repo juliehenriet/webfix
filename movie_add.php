@@ -1,15 +1,18 @@
 <?php
 
   require_once(__DIR__.'/../webflix/partial/header.php');
+
+  var_dump($_POST);
+
   $query = $db->query('SELECT * FROM category');
   $categorys = $query->fetchAll();
 
  ?>
 
 <div class="container">
-<form action="movie_add.php" method="post" enctype="multipart/form-data">
+<form action ="movie_add.php"method="post" enctype="multipart/form-data">
 
-<input class="form-control form-control-lg" type="text" name="name"></input>
+<input class="form-control form-control-lg" type="text" name="title"></input>
 
 <div class="form-group">
     <label for="exampleFormControlTextarea1">Description</label>
@@ -18,13 +21,14 @@
 
 <input class="form-control form-control-lg" type="text" name ="video_link"/></br>
 
-<select class="form-control form-control-lg" name="category" <?php echo isset($errors['category']) ? 'is-invalid' : null; ?>>
+<select class="form-control form-control-lg" name="category">
 
       <option>selectionnez la catégorie</option>
-        <?php foreach ($categorys as $category) {?>
-      <option  value="action" <?php echo ($category === $category['name']) ? 'selected' : ''; ?>><?php echo $category['name']; ?></option>
-  <?php  }  ?>
+<?php foreach ($categorys as $category) { ?>
 
+<option  value="<?php echo $category['id']; ?>"<?php echo ($categorys === $category) ? 'selected' : ''; ?>> <?php echo $category['name'];?> </option>
+
+<?php } ?>
 </select></br>
   <button type="submit" class="btn btn-danger">Submit</button>
 </div>
@@ -32,30 +36,30 @@
 
  <?php
 
-$name = null;
+$title = null;
 $description = null;
 $video_link = null;
 $category = null;
 
 if (!empty($_POST)){
 
-    $name = $_POST['name'];
+    $title = $_POST['title'];
     $description = $_POST['description'];
     $video_link =  $_POST['video_link'];
     $category = $_POST['category'];
 
     $errors = [];
 
-    if (empty($name)) {
+    if (empty($title)) {
       $errors['name'] = 'Le nom n\'est pas valide';
         echo 'le nom n est pas valide';
   }
 
 
-  if (empty($category) || !in_array($category, ['action', 'fantastique', 'comédie',])) {
-      $errors['category'] = 'La catégorie n\'est pas valide';
-      echo 'la categorie n est pas valide';
-  }
+  // if (empty($category) || !in_array($category, ['action', 'fantastique', 'comédie', 'horreur', 'film d animation'])) {
+  //     $errors['category'] = 'La catégorie n\'est pas valide';
+  //     echo 'la categorie n est pas valide';
+  // }
   // Vérifier la description
   if (strlen($description) < 10) {
       $errors['description'] = 'La description n\'est pas valide';
@@ -71,10 +75,10 @@ if (!empty($_POST)){
 
   if (empty($errors)) {
     $query = $db->prepare('
-        INSERT INTO movie (`title`, `id`, `description`, `video_link`) VALUES (:title, :id, :description, :video_link)
+        INSERT INTO movie (`title`, `category_id`, `description`, `video_link`) VALUES (:title, :category_id, :description, :video_link)
     ');
-    $query->bindValue(':title', $name, PDO::PARAM_STR);
-      $query->bindValue(':id', $category, PDO::PARAM_STR);
+    $query->bindValue(':title', $title, PDO::PARAM_STR);
+      $query->bindValue(':category_id', $category, PDO::PARAM_INT);
     $query->bindValue(':description', $description, PDO::PARAM_STR);
     $query->bindValue(':video_link',$video_link, PDO::PARAM_STR);
 
